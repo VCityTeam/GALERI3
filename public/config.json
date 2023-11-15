@@ -1,0 +1,67 @@
+{
+  "logoPaths": [
+    "./assets/logo/logo-cnrs.png",
+    "./assets/logo/logo-cpe-bleu.png",
+    "./assets/logo/logo-imu.png",
+    "./assets/logo/logo-insa-lyon.png",
+    "./assets/logo/logo-liris.png",
+    "./assets/logo/logo-VDL.png"
+  ],
+  "ui": {
+    "defaultLeftPanWidth": 500
+  },
+  "crs": "EPSG:3946",
+  "extent": {
+    "west": 1842573,
+    "east": 1842916,
+    "south": 5176379,
+    "north": 5176510
+  },
+  "camera": {
+    "fov": 60,
+    "default": {
+      "position": {
+        "x": 1842764,
+        "y": 5176211,
+        "z": 302
+      }
+    }
+  },
+  "skyColor": { "r": 0.29, "g": 0.27, "b": 0.39 },
+  "colorLayers": [
+    {
+      "name": "Fond de carte",
+      "source": {
+        "url": "https://imagerie.data.grandlyon.com/geoserver/grandlyon/ows",
+        "name": "ortho_latest",
+        "version": "1.3.0",
+        "format": "image/jpeg",
+        "layer_name": "Base_Map",
+        "transparent": true
+      }
+    }
+  ],
+  "elevationLayers": [
+    {
+      "name": "Lyon Elevation",
+      "colorTextureElevationMinZ": 149,
+      "colorTextureElevationMaxZ": 622,
+      "source": {
+        "url": "https://download.data.grandlyon.com/wms/grandlyon",
+        "format": "image/jpeg",
+        "name": "MNT2018_Altitude_2m",
+        "heightMapWidth": 256
+      }
+    }
+  ],
+  "defaultPointCloudSize": 0.03,
+  "raycasterPointsThreshold": 0.01,
+  "pointClouds": [
+    {
+      "name": "ADP_3dtiles_pc_ss_10cm",
+      "source": {
+        "url": "https://dataset-dl.liris.cnrs.fr/three-d-tiles-lyon-metropolis/2018/Villeurbanne_2018_point_cloud/tileset.json"
+      }
+    }
+  ]
+}

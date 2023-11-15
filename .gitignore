@@ -1,0 +1,10 @@
+.idea/
+node_modules
+dist
+lib
+.vs
+.vscode
+TODO.txt
+private_assets
+database
+.env

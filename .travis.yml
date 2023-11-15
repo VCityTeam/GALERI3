@@ -1,0 +1,22 @@
+# @format
+os: linux
+dist: focal
+language: node_js
+node_js:
+  - 18
+
+branches:
+  only:
+    - master
+
+before_install:
+  - npm --version
+
+install:
+  - npm install
+
+jobs:
+  include:
+    - script:
+        - npm run eslint
+      name: 'Lint'

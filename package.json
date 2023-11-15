@@ -1,0 +1,68 @@
+{
+  "name": "galeri3",
+  "version": "1.0.0",
+  "description": "web app to visualize and cooperate on a pointcloud",
+  "scripts": {
+    "clean": "rm -f -r node_modules && rm -f package-lock.json && rm -f  -r ./public/dist",
+    "clear-node": "sudo killall -9 node",
+    "reset-backend": "node ./bin/reset.js",
+    "reset": "npm run clean && npm i",
+    "eslint": "eslint --ignore-path .gitignore /src",
+    "eslint-quiet": "eslint --quiet --ignore-path .gitignore /src",
+    "eslint-fix": "eslint --ignore-path .gitignore /src --fix",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js",
+    "build-dev": "cross-env NODE_ENV=development webpack --config webpack.config.js",
+    "dev": "cross-env NODE_ENV=development nodemon --trace-warnings --verbose --watch ./src --watch ./bin --delay 2500ms ./bin/dev.js -e js,css,html",
+    "create-token-secret": "node ./bin/createTokenSecret.js",
+    "start": "cross-env NODE_ENV=production npm run build && cross-env NODE_ENV=production node ./bin/backend.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VCityTeam/GALERI3.git"
+  },
+  "keywords": [
+    "ud-viz"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VCityTeam/GALERI3/issues"
+  },
+  "homepage": "https://github.com/VCityTeam/GALERI3",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.7.1",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-html": "^7.1.0",
+    "eslint-plugin-jsdoc": "^39.6.4",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^3.0.1",
+    "prettier": "2.6.2",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "dependencies": {
+    "@ud-viz/point_cloud_visualizer": "4.0.1",
+    "@ud-viz/widget_layer_choice": "4.0.1",
+    "@ud-viz/utils_browser": "4.0.1",
+    "@ud-viz/utils_shared": "4.0.1",
+    "@ud-viz/widget_bookmark": "^4.0.0",
+    "archiver": "^6.0.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "buffer": "^6.0.3",
+    "child-process-promise": "^2.2.1",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.2",
+    "gltf-validator": "^2.0.0-dev.3.9",
+    "itowns": "^2.40.0",
+    "jsonwebtoken": "^9.0.0",
+    "proj4": "^2.8.0",
+    "sequelize": "6.31.1",
+    "string-replace-middleware": "^1.0.2",
+    "sqlite3": "^5.1.6",
+    "three": "^0.154.0"
+  }
+}
