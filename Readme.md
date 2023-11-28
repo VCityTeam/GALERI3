@@ -24,7 +24,7 @@ Galeri3 is a web application made of a backend ([express](https://expressjs.com/
 
     `node ./bin/createAdmin.js admin_name admin_password`
 
-  *  edit [config](./packages//browser//public/config.json) 
+  *  edit [config](./public/config.json) 
 
   * run the application
 
