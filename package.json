@@ -14,6 +14,8 @@
     "build-dev": "cross-env NODE_ENV=development webpack --config webpack.config.js",
     "dev": "cross-env NODE_ENV=development nodemon --trace-warnings --verbose --watch ./src --watch ./bin --delay 2500ms ./bin/dev.js -e js,css,html",
     "create-token-secret": "node ./bin/createTokenSecret.js",
+    "create-backup": "node ./bin/createBackup.js",
+    "load-backup": "node ./bin/loadBackup.js",
     "start": "cross-env NODE_ENV=production npm run build && cross-env NODE_ENV=production node ./bin/backend.js"
   },
   "repository": {
@@ -45,10 +47,10 @@
   },
   "dependencies": {
     "@ud-viz/point_cloud_visualizer": "4.0.1",
-    "@ud-viz/widget_layer_choice": "4.0.1",
     "@ud-viz/utils_browser": "4.0.1",
     "@ud-viz/utils_shared": "4.0.1",
     "@ud-viz/widget_bookmark": "^4.0.0",
+    "@ud-viz/widget_layer_choice": "4.0.1",
     "archiver": "^6.0.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
@@ -56,13 +58,14 @@
     "child-process-promise": "^2.2.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.2",
+    "extract-zip": "^2.0.1",
     "gltf-validator": "^2.0.0-dev.3.9",
     "itowns": "^2.40.0",
     "jsonwebtoken": "^9.0.0",
     "proj4": "^2.8.0",
     "sequelize": "6.31.1",
-    "string-replace-middleware": "^1.0.2",
     "sqlite3": "^5.1.6",
+    "string-replace-middleware": "^1.0.2",
     "three": "^0.154.0"
   }
 }
