@@ -320,6 +320,7 @@ export const start = (user, config = {}) => {
 
     const exporter = new GLTFExporter();
 
+    // when gltf is exported the scene is added into the hierarchy, so to get the original gltf with the same hierarchy we have to "remove" the scene
     const fromGLTFSceneToMesh = (gltf) => gltf.scene.children[0]; // TODO do something better
 
     const transformControls = new TransformControls(
