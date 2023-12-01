@@ -8,34 +8,39 @@ const bcryptjs = require('bcryptjs');
 const { user, constants } = require('../src/shared');
 const THREE = require('three');
 
+let User = null;
+let sequelize = null;
+
 const connectToUserDB = async () => {
-  const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: './database/user.sqlite',
-    define: { freezeTableName: true },
-    logging: (data) => {
-      // console.info(data);
-    },
-  });
+  if (!sequelize || !User) {
+    sequelize = new Sequelize({
+      dialect: 'sqlite',
+      storage: './database/user.sqlite',
+      define: { freezeTableName: true },
+      logging: (data) => {
+        // console.info(data);
+      },
+    });
 
-  try {
-    await sequelize.authenticate();
-    console.log(
-      'Authentification API connection has been established successfully.'
-    );
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    try {
+      await sequelize.authenticate();
+      console.log(
+        'Authentification API connection has been established successfully.'
+      );
+    } catch (error) {
+      console.error('Unable to connect to the database:', error);
+    }
+
+    User = sequelize.define('User', {
+      uuid: DataTypes.STRING,
+      nickname: DataTypes.STRING,
+      hashPassword: DataTypes.STRING,
+      role: DataTypes.STRING,
+      pending: DataTypes.BOOLEAN,
+    });
+
+    await sequelize.sync(); // force db to be up to date with javascript (create one if there is not)
   }
-
-  const User = sequelize.define('User', {
-    uuid: DataTypes.STRING,
-    nickname: DataTypes.STRING,
-    hashPassword: DataTypes.STRING,
-    role: DataTypes.STRING,
-    pending: DataTypes.BOOLEAN,
-  });
-
-  await sequelize.sync(); // force db to be up to date with javascript (create one if there is not)
 
   return { sequelize: sequelize, User: User };
 };
@@ -117,8 +122,17 @@ const authenticateToken = (req, res, next) => {
     return res.sendStatus(401);
   }
 
-  jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+  jwt.verify(token, process.env.TOKEN_SECRET, async (err, user) => {
     if (err) return res.sendStatus(403);
+    // check if token user is still in database
+    const { User } = await connectToUserDB();
+
+    const userDb = await User.findOne({ where: { uuid: user.uuid } });
+
+    if (!userDb) {
+      res.sendStatus(401);
+      return;
+    }
 
     req.user = user;
 
@@ -133,8 +147,18 @@ const authenticateAdminToken = (req, res, next) => {
     return res.sendStatus(401);
   }
 
-  jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+  jwt.verify(token, process.env.TOKEN_SECRET, async (err, user) => {
     if (err) return res.sendStatus(403);
+
+    // check if token user is still in database
+    const { User } = await connectToUserDB();
+
+    const userDb = await User.findOne({ where: { uuid: user.uuid } });
+
+    if (!userDb) {
+      res.sendStatus(401);
+      return;
+    }
 
     if (user.role != constants.user.role.admin) return res.sendStatus(401);
 
