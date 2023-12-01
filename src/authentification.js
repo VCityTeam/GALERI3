@@ -75,7 +75,7 @@ export const createAuthentificationDomElement = (onLogSuccess) => {
 
   signUpButton.onclick = () => {
     if (passwordSignUp.input.value != confirmPasswordSignUp.input.value) {
-      alert('Les mot de passes ne sont pas identique');
+      alert('Les mots de passes ne sont pas identique');
     }
 
     const newUser = {
