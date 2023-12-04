@@ -145,7 +145,7 @@ export const start = (user, config = {}) => {
   );
 
   settingsDetails.appendChild(pointCloudVisualizer.domElementSpeedControls);
-  settingsDetails.appendChild(pointCloudVisualizer.cameraNearFarDomElement);
+  settingsDetails.appendChild(pointCloudVisualizer.clippingPlaneDetails);
   pointCloudVisualizer.domElementTargetDragElement.classList.add(
     'draggable-element'
   );
