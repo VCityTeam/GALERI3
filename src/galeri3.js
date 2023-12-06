@@ -38,6 +38,7 @@ import {
   numberToLabel,
   ImageContainer,
   centerObject3DOnItsBoundingBox,
+  setObject3DOpacity,
 } from './utils';
 
 import { createUserValidationDomElement } from './authentification';
@@ -430,6 +431,19 @@ export const start = (user, config = {}) => {
 
                 parentGltfToValidate.add(mesh);
 
+                // opacity
+                const opacitySlider = createLabelInput('Opacity: ', 'range');
+                domElement.appendChild(opacitySlider.parent);
+                opacitySlider.input.min = 0;
+                opacitySlider.input.max = 1;
+                opacitySlider.input.step = 'any';
+                const defaultOpacity = 1; // choose to set opacity to one for mesh
+                opacitySlider.input.value = defaultOpacity;
+                setObject3DOpacity(mesh, defaultOpacity);
+                opacitySlider.input.onchange = () => {
+                  setObject3DOpacity(mesh, opacitySlider.input.valueAsNumber);
+                };
+
                 // visualize
                 const buttonVisualize = document.createElement('button');
                 buttonVisualize.innerText = 'visualize';
@@ -605,6 +619,19 @@ export const start = (user, config = {}) => {
                 );
               };
 
+              // opacity
+              const opacitySlider = createLabelInput('Opacity: ', 'range');
+              domElement.appendChild(opacitySlider.parent);
+              opacitySlider.input.min = 0;
+              opacitySlider.input.max = 1;
+              opacitySlider.input.step = 'any';
+              const defaultOpacity = 1; // choose to set opacity to one for mesh
+              opacitySlider.input.value = defaultOpacity;
+              setObject3DOpacity(mesh, defaultOpacity);
+              opacitySlider.input.onchange = () => {
+                setObject3DOpacity(mesh, opacitySlider.input.valueAsNumber);
+              };
+
               if (
                 user.role == constants.user.role.admin ||
                 user.uuid == object3D.user_uuid
@@ -711,6 +738,19 @@ export const start = (user, config = {}) => {
             );
             bb.getCenter(pointCloudVisualizer.orbitControls.target);
             pointCloudVisualizer.itownsView.notifyChange();
+          };
+
+          // opacity
+          const opacitySlider = createLabelInput('Opacity: ', 'range');
+          el.appendChild(opacitySlider.parent);
+          opacitySlider.input.min = 0;
+          opacitySlider.input.max = 1;
+          opacitySlider.input.step = 'any';
+          const defaultOpacity = 1; // choose to set opacity to one for child
+          opacitySlider.input.value = defaultOpacity;
+          setObject3DOpacity(child, defaultOpacity);
+          opacitySlider.input.onchange = () => {
+            setObject3DOpacity(child, opacitySlider.input.valueAsNumber);
           };
 
           // select
