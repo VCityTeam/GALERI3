@@ -7,6 +7,7 @@ import {
   createLocalStorageDetails,
   createLocalStorageSlider,
   createLocalStorageCheckbox,
+  cameraFitRectangle,
 } from '@ud-viz/utils_browser';
 
 import { PointCloudVisualizer } from '@ud-viz/point_cloud_visualizer';
@@ -693,6 +694,23 @@ export const start = (user, config = {}) => {
           const label = document.createElement('div');
           label.innerText = child.name;
           el.appendChild(label);
+
+          // go to
+          const goToButton = document.createElement('button');
+          goToButton.innerText = 'go to';
+          el.appendChild(goToButton);
+
+          goToButton.onclick = () => {
+            const bb = new THREE.Box3().setFromObject(child);
+            cameraFitRectangle(
+              pointCloudVisualizer.itownsView.camera.camera3D,
+              bb.min,
+              bb.max,
+              bb.max.z
+            );
+            bb.getCenter(pointCloudVisualizer.orbitControls.target);
+            pointCloudVisualizer.itownsView.notifyChange();
+          };
 
           // select
           const selectButton = document.createElement('button');
@@ -1474,6 +1492,7 @@ export const start = (user, config = {}) => {
     if (event.key == 'p') {
       console.log(pointCloudVisualizer.orbitControls);
       console.log(pointCloudVisualizer.topScene);
+      console.log(pointCloudVisualizer);
     }
   });
 };

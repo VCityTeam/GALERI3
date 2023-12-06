@@ -48,7 +48,7 @@ export const unUrlify = (text) => {
   return buffer.innerText;
 };
 
-export const request = async (url = '', data = {}) => {
+export const request = async (url = '', data = {}, timeout = 100000) => {
   const xhr = new XMLHttpRequest();
   xhr.open('POST', url);
   xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
@@ -71,7 +71,7 @@ export const request = async (url = '', data = {}) => {
         reject(xhr.status);
       }
     };
-    xhr.timeout = 5000;
+    xhr.timeout = timeout;
   });
 };
 
