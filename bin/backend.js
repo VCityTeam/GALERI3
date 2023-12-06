@@ -703,6 +703,8 @@ const runGaleri3API = async (app) => {
               res.send();
             })
             .catch((error) => console.error('Validation failed: ', error));
+        } else {
+          res.sendStatus(401);
         }
       });
     }
