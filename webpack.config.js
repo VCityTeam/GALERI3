@@ -14,7 +14,7 @@ const result = {
     rules: [],
   },
   resolve: {
-    modules: ['../UD-Viz/node_modules', 'node_modules', 'src'],
+    modules: ['node_modules'],
     fallback: {
       buffer: false,
     },
