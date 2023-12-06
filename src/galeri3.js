@@ -603,37 +603,42 @@ export const start = (user, config = {}) => {
                 );
               };
 
-              // select
-              const selectButton = document.createElement('button');
-              selectButton.innerText = 'select';
-              domElement.appendChild(selectButton);
-              selectButton.onclick = () => selectTransformControls(mesh);
+              if (
+                user.role == constants.user.role.admin ||
+                user.uuid == object3D.user_uuid
+              ) {
+                // select
+                const selectButton = document.createElement('button');
+                selectButton.innerText = 'select';
+                domElement.appendChild(selectButton);
+                selectButton.onclick = () => selectTransformControls(mesh);
 
-              // update
-              const updateContent = document.createElement('button');
-              updateContent.innerText = 'update';
-              domElement.appendChild(updateContent);
+                // update
+                const updateContent = document.createElement('button');
+                updateContent.innerText = 'update';
+                domElement.appendChild(updateContent);
 
-              updateContent.onclick = () => {
-                // Parse the input and generate the glTF output
-                exporter.parse(
-                  mesh,
-                  // called when the glb has been generated
-                  function (gltf) {
-                    request(
-                      window.location.origin +
-                        constants.endPoint.galeri3.updateGLTF +
-                        '/' +
-                        object3D.uuid,
-                      { gltf: gltf }
-                    ).then(updateGLTFValidated);
-                  },
-                  // called when there is an error in the generation
-                  function (error) {
-                    console.log('An error happened ', error);
-                  }
-                );
-              };
+                updateContent.onclick = () => {
+                  // Parse the input and generate the glTF output
+                  exporter.parse(
+                    mesh,
+                    // called when the glb has been generated
+                    function (gltf) {
+                      request(
+                        window.location.origin +
+                          constants.endPoint.galeri3.updateGLTF +
+                          '/' +
+                          object3D.uuid,
+                        { gltf: gltf }
+                      ).then(updateGLTFValidated);
+                    },
+                    // called when there is an error in the generation
+                    function (error) {
+                      console.log('An error happened ', error);
+                    }
+                  );
+                };
+              }
             });
           });
         });
