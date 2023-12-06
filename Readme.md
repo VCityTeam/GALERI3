@@ -16,6 +16,10 @@ Galeri3 is a web application made of a backend ([express](https://expressjs.com/
 
     `npm install`
 
+  * create a .env file
+  
+    `touch .env`
+
   * create a secret to generate user token
 
     `npm run create-token-secret`
