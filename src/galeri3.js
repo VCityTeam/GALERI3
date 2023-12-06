@@ -37,6 +37,7 @@ import {
   setCookie,
   numberToLabel,
   ImageContainer,
+  centerObject3DOnItsBoundingBox,
 } from './utils';
 
 import { createUserValidationDomElement } from './authentification';
@@ -810,6 +811,8 @@ export const start = (user, config = {}) => {
         readFileAsGltf(e)
           .then((gltf) => {
             const mesh = gltf.scene; // here no children
+
+            centerObject3DOnItsBoundingBox(mesh);
 
             const filename = e.target.files[0].name;
 

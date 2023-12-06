@@ -1,3 +1,4 @@
+import { Box3, Object3D } from 'three';
 import './style.css'; // image container
 
 // https://www.freecodecamp.org/news/how-to-reverse-a-string-in-javascript-in-3-different-ways-75e4763c68cb/
@@ -93,3 +94,17 @@ export class ImageContainer {
     this.domElement.appendChild(this.image);
   }
 }
+
+/**
+ *
+ * @param {Object3D} object3D - object 3D to center
+ */
+export const centerObject3DOnItsBoundingBox = (object3D) => {
+  const bb = new Box3().setFromObject(object3D);
+  bb.getCenter(object3D.position);
+  object3D.traverse((child) => {
+    if (child.geometry) {
+      child.geometry.center();
+    }
+  });
+};
