@@ -110,9 +110,7 @@ input[type='range'] {
 .conversation_container {
   padding: 5px;
   margin: 2px;
-  max-height: 500px;
   overflow-x: clip;
-  overflow-y: scroll;
 }
 
 .conversation_container * {
