@@ -108,3 +108,13 @@ export const centerObject3DOnItsBoundingBox = (object3D) => {
     }
   });
 };
+
+export const setObject3DOpacity = (object3D, value) => {
+  object3D.traverse((o) => {
+    if (o.material) {
+      o.material.opacity = value;
+      o.material.transparent = value < 1;
+      o.material.needsUpdate = true;
+    }
+  });
+};
