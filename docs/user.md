@@ -129,7 +129,7 @@ A checkbox to fold the left pan when the camera is moving.
 
 ![](./img/19.png)
 
-A tool to parameter color layers, on the image above there is only one color layer but several can be added. You an set the visibility of the color layer with a checkbox, and the opacity with a slider. ![](./img/20.png) these arrows allows to set the order in which color layers are rendered.
+A tool to parameter color layers, on the image above there is only one color layer but several can be added. You can set the visibility of the color layer with a checkbox, and the opacity with a slider. ![](./img/20.png) these arrows allow to set the order in which color layers are rendered.
 
 #### Planar slab
 
@@ -189,13 +189,13 @@ You can exit the measure mode by typing Escape or clicking "stop mesurer" button
 
 You can delete the current measure path by clicking "Supprimer mesure" button.
 
-At the bottom of the measure menu you can read "position point cliqué = ..." with the coordinate in meter of the last point clicked. added
+At the bottom of the measure menu you can read "position point cliqué = ..." with the coordinate in meter of the last point clicked.
 
 ### User information
 
 ![](./img/31.png)
 
-First line is your nickname, second line is your role yours should be "default". You can click "Deconnexion" button to remove your authentification token from cookies, meaning you will have to reconnect to access to the application.
+First line is your nickname, second line is your role (yours should be "default"). You can click "Deconnexion" button to remove your authentification token from cookies, meaning you will have to reconnect to access to the application with your credentials.
 
 ### Object 3D
 
