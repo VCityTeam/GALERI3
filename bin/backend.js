@@ -629,6 +629,8 @@ const runGaleri3API = async (app) => {
               path: clientPath,
               user_uuid: req.user.uuid,
               user_nickname: req.user.nickname,
+            }).then(() => {
+              res.send({ message: 'gltf ' + req.body.name + ' created' });
             });
           })
           .catch((error) => console.error('Validation failed: ', error));
@@ -700,7 +702,7 @@ const runGaleri3API = async (app) => {
               console.log('gltf validated');
               const serverPath = path.resolve(CLIENT_FOLDER_PATH, object.path);
               fs.writeFileSync(serverPath, gltfContent);
-              res.send();
+              res.send({ message: 'gltf ' + object.name + ' updated' });
             })
             .catch((error) => console.error('Validation failed: ', error));
         } else {

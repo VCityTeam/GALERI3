@@ -511,7 +511,10 @@ export const start = (user, config = {}) => {
                           '/' +
                           el.uuid,
                         { gltf: gltf }
-                      ).then(updateGLTFToValidate);
+                      ).then((response) => {
+                        alert(response.message);
+                        updateGLTFToValidate();
+                      });
                     },
                     // called when there is an error in the generation
                     function (error) {
@@ -793,7 +796,7 @@ export const start = (user, config = {}) => {
                     name: name,
                     gltf: gltf,
                   }
-                );
+                ).then((response) => alert(response.message));
               },
               // called when there is an error in the generation
               function (error) {
