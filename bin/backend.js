@@ -38,10 +38,10 @@ const ASSET_TYPE = {
  * @param {string} type - type of asset
  * @returns {{uuid:string, clientPath:string}} - client path and uuid of the asset
  */
-const saveClientAsset = (content, format, type) => {
+const saveDatabasePrivateAsset = (content, format, type) => {
   const uuid = THREE.MathUtils.generateUUID();
   const commonPath =
-    'private_assets/database/' + type + '/' + uuid + '.' + format;
+    'database/private_assets/' + type + '/' + uuid + '.' + format;
   const serverPath = CLIENT_FOLDER_PATH + commonPath; // <== backend access this asset with this path
   const clientPath = './' + commonPath; // <== client access this asset with this path
 
@@ -54,7 +54,7 @@ const saveClientAsset = (content, format, type) => {
  *
  * @param {string} clientPath - path of client
  */
-const removeClientAsset = (clientPath) => {
+const deleteDatabasePrivateAsset = (clientPath) => {
   if (!fs.existsSync(clientPath)) {
     console.info(clientPath + ' does not exists');
     return;
@@ -90,6 +90,29 @@ const createApp = async () => {
       res.send(fs.readFileSync(assetPath));
     }
   });
+
+  const sendFileFromRequest = (req, res) => {
+    const assetPath = path.resolve(
+      process.cwd(),
+      CLIENT_FOLDER_PATH + req.url.toString()
+    );
+
+    if (!fs.existsSync(assetPath)) {
+      res.status(404);
+      res.send();
+    } else {
+      res.send(fs.readFileSync(assetPath));
+    }
+  };
+
+  // private_assets
+  app.get('/private_assets/**', authenticateToken, sendFileFromRequest);
+  // database private_assets
+  app.get(
+    '/database/private_assets/**',
+    authenticateToken,
+    sendFileFromRequest
+  );
 
   // post json limit
   app.use(bodyParser.json({ limit: '100mb' }));
@@ -227,13 +250,13 @@ const runGaleri3API = async (app) => {
     if (!fs.existsSync(path)) await exec('mkdir -p ' + path);
   };
 
-  await createDirectory('./database');
-  await createDirectory(CLIENT_FOLDER_PATH + 'private_assets/database/');
+  // private assets not save in backup
+  await createDirectory('./private_assets');
 
+  await createDirectory('./database');
+  await createDirectory('./database/private_assets');
   for (const type in ASSET_TYPE) {
-    await createDirectory(
-      CLIENT_FOLDER_PATH + 'private_assets/database/' + ASSET_TYPE[type]
-    );
+    await createDirectory('./database/private_assets/' + ASSET_TYPE[type]);
   }
 
   const sequelize = new Sequelize({
@@ -341,7 +364,7 @@ const runGaleri3API = async (app) => {
                 where: { uuid: map.commentImageUUID },
               }).then((img) => {
                 // delete image from disk
-                removeClientAsset(img.path);
+                deleteDatabasePrivateAsset(img.path);
                 CommentImage.destroy({ where: { uuid: img.uuid } });
               });
 
@@ -360,7 +383,7 @@ const runGaleri3API = async (app) => {
     authenticateToken,
     (req, res) => {
       if (req.body) {
-        const result = saveClientAsset(
+        const result = saveDatabasePrivateAsset(
           dataUriToBuffer(req.body.dataURI),
           'jpeg',
           ASSET_TYPE.CONVERSATION3D
@@ -399,7 +422,7 @@ const runGaleri3API = async (app) => {
           c.user_uuid == req.user.uuid
         ) {
           // delete image
-          removeClientAsset(c.image_path);
+          deleteDatabasePrivateAsset(c.image_path);
 
           Conversation3D.destroy({
             where: {
@@ -478,7 +501,7 @@ const runGaleri3API = async (app) => {
         // create images associated
         req.body.dataURIS.forEach((dataURI) => {
           if (typeof dataURI == 'string' && dataURI.startsWith('data:image')) {
-            const result = saveClientAsset(
+            const result = saveDatabasePrivateAsset(
               dataUriToBuffer(dataURI),
               'jpeg',
               ASSET_TYPE.COMMENT
@@ -584,7 +607,7 @@ const runGaleri3API = async (app) => {
               CommentImage.findOne({
                 where: { uuid: map.commentImageUUID },
               }).then((commentImage) => {
-                removeClientAsset(
+                deleteDatabasePrivateAsset(
                   path.resolve(CLIENT_FOLDER_PATH, commentImage.path)
                 );
                 Promise.all([
@@ -616,7 +639,7 @@ const runGaleri3API = async (app) => {
           .validateString(gltfContent)
           .then((report) => {
             console.log('gltf validated');
-            const { clientPath, uuid } = saveClientAsset(
+            const { clientPath, uuid } = saveDatabasePrivateAsset(
               gltfContent,
               'gltf',
               ASSET_TYPE.GLTF_USER
@@ -669,7 +692,7 @@ const runGaleri3API = async (app) => {
           req.user.uuid == result.user_uuid
         ) {
           Object3D.destroy({ where: { uuid: req.params.uuid } });
-          removeClientAsset(result.path);
+          deleteDatabasePrivateAsset(result.path);
         }
       });
     }
