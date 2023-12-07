@@ -733,14 +733,24 @@ export const start = (user, config = {}) => {
 
           goToButton.onclick = () => {
             const bb = new THREE.Box3().setFromObject(child);
+            // record
+            const oldPosition =
+              pointCloudVisualizer.itownsView.camera.camera3D.position.clone();
             cameraFitRectangle(
               pointCloudVisualizer.itownsView.camera.camera3D,
               bb.min,
               bb.max,
               bb.max.z
             );
-            bb.getCenter(pointCloudVisualizer.orbitControls.target);
-            pointCloudVisualizer.itownsView.notifyChange();
+            const destPos =
+              pointCloudVisualizer.itownsView.camera.camera3D.position.clone();
+            pointCloudVisualizer.itownsView.camera.camera3D.position.copy(
+              oldPosition
+            );
+            pointCloudVisualizer.moveCamera(
+              destPos,
+              bb.getCenter(new THREE.Vector3())
+            );
           };
 
           // opacity
