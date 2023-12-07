@@ -213,21 +213,21 @@ export const start = (user, config = {}) => {
       }
     }
 
-    // user deletion
+    // user management
     {
       if (user.role == constants.user.role.admin) {
-        const userDeletionDomElement = createLocalStorageDetails(
+        const userManagementDetails = createLocalStorageDetails(
           'user_deletion_key',
-          'Supprimer des utilisateurs',
+          'Manager des utilisateurs',
           leftPanDomElement
         );
 
         const udpateButton = document.createElement('button');
         udpateButton.innerText = 'Mettre à jour';
-        userDeletionDomElement.appendChild(udpateButton);
+        userManagementDetails.appendChild(udpateButton);
 
         const usersContainer = document.createElement('div');
-        userDeletionDomElement.appendChild(usersContainer);
+        userManagementDetails.appendChild(usersContainer);
 
         const updateUsers = () => {
           request(window.origin + constants.endPoint.user.pullUsers).then(
@@ -235,10 +235,19 @@ export const start = (user, config = {}) => {
               while (usersContainer.firstChild)
                 usersContainer.firstChild.remove();
 
-              users.forEach((user) => {
+              users.forEach((u) => {
+                const container = document.createElement('div');
+                usersContainer.appendChild(container);
+
+                // label user
+                const labelUser = document.createElement('div');
+                labelUser.innerText = u.nickname;
+                container.appendChild(labelUser);
+
+                // deletion
                 const deletionButton = document.createElement('button');
-                deletionButton.innerText = 'Supprimer ' + user.nickname;
-                usersContainer.appendChild(deletionButton);
+                deletionButton.innerText = 'Supprimer ';
+                container.appendChild(deletionButton);
 
                 deletionButton.onclick = () => {
                   if (confirm(deletionButton.innerText + ' ?')) {
@@ -246,9 +255,34 @@ export const start = (user, config = {}) => {
                       window.origin +
                         constants.endPoint.user.deleteUser +
                         '/' +
-                        user.uuid
+                        u.uuid
                     ).then(setTimeout(updateUsers, 1500));
                   }
+                };
+
+                // role
+                const selectRole = document.createElement('select');
+                container.appendChild(selectRole);
+
+                for (const role in constants.user.role) {
+                  if (role == u.role) continue;
+
+                  const option = document.createElement('option');
+                  option.innerText = role;
+                  option.value = role;
+                  selectRole.appendChild(option);
+                }
+
+                // set role button
+                const setRoleButton = document.createElement('button');
+                setRoleButton.innerText = 'Change user role';
+                container.appendChild(setRoleButton);
+
+                setRoleButton.onclick = () => {
+                  request(window.origin + constants.endPoint.user.setRole, {
+                    role: selectRole.selectedOptions[0].value,
+                    uuid: u.uuid,
+                  }).then(updateUsers);
                 };
               });
             }

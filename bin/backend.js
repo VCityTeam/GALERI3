@@ -218,7 +218,11 @@ const runUserAPI = async (app) => {
     (req, res) => {
       User.findAll().then((users) => {
         const response = users.map((el) => {
-          return { uuid: el.dataValues.uuid, nickname: el.dataValues.nickname };
+          return {
+            uuid: el.dataValues.uuid,
+            nickname: el.dataValues.nickname,
+            role: el.dataValues.role,
+          };
         });
         res.send(response);
       });
@@ -238,6 +242,19 @@ const runUserAPI = async (app) => {
     authenticateAdminToken,
     (req, res) => {
       User.update({ pending: false }, { where: { uuid: req.params.uuid } });
+    }
+  );
+
+  app.post(
+    galeri3Shared.constants.endPoint.user.setRole,
+    authenticateAdminToken,
+    (req, res) => {
+      if (req.body) {
+        User.update(
+          { role: req.body.role },
+          { where: { uuid: req.body.uuid } }
+        ).then(() => res.send());
+      }
     }
   );
 
