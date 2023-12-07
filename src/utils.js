@@ -104,11 +104,26 @@ export const centerObject3DOnItsBoundingBox = (object3D) => {
   bb.getCenter(object3D.position);
   object3D.traverse((child) => {
     if (child.geometry) {
-      child.geometry.center();
+      child.geometry.applyMatrix4(child.matrix); // tweak child transform in geometry
+      // apply parent offset
+      child.geometry.translate(
+        -object3D.position.x,
+        -object3D.position.y,
+        -object3D.position.z
+      );
+      // cancel child transform
+      child.position.set(0, 0, 0);
+      child.rotation.set(0, 0, 0);
+      child.scale.set(1, 1, 1);
     }
   });
 };
 
+/**
+ *
+ * @param {Object3D} object3D - object 3d
+ * @param {number} value opacity value between 0 => 1
+ */
 export const setObject3DOpacity = (object3D, value) => {
   object3D.traverse((o) => {
     if (o.material) {
