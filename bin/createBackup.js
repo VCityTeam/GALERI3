@@ -25,9 +25,6 @@ const main = async () => {
   // append files from a sub-directory, putting its contents at the root of archive
   archive.directory('./database', 'database');
 
-  // append files from a sub-directory and naming it `new-subdir` within the archive
-  archive.directory('./private_assets', 'private_assets');
-
   archive.finalize();
 };
 

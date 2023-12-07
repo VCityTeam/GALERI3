@@ -7,15 +7,13 @@ const main = async () => {
   const pathBackup = process.argv[2];
 
   // delete old one
-  await exec('rm -f  -r ./database && rm -f  -r ./private_assets');
+  await exec('rm -f  -r ./database');
 
   try {
     await extract(pathBackup, { dir: path.resolve(__dirname, '../temp') });
     console.log('Extraction complete');
 
-    await exec(
-      'mv ./temp/private_assets/ ./private_assets && mv ./temp/database/ ./database'
-    );
+    await exec('mv ./temp/database/ ./database');
 
     // delete temp directory
     await exec('rm -f -r ./temp');

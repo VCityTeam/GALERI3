@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -f -r node_modules && rm -f package-lock.json && rm -f  -r ./public/dist",
     "clear-node": "sudo killall -9 node",
-    "reset-backend": "node ./bin/reset.js",
+    "reset-backend": "rm  -f -r database && npm run create-token-secret",
     "reset": "npm run clean && npm i",
     "eslint": "eslint --ignore-path .gitignore /src",
     "eslint-quiet": "eslint --quiet --ignore-path .gitignore /src",
