@@ -46,6 +46,7 @@ module.exports = {
         accessTokenValid: '/access_token_valid',
         deleteUser: '/delete_user',
         validateUser: '/validate_user',
+        setRole: '/set_role',
       },
     },
     user: {
