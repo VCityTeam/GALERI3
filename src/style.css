@@ -72,12 +72,18 @@ input[type='range'] {
   height: 50px;
 }
 
-/***************************************************************** BUTTON FOLD */
-.button_fold {
+/***************************************************************** top right container */
+#top_right_container {
   position: absolute;
   z-index: 2;
   top: 0;
   right: 0;
+}
+
+.loading_info {
+  font-size: x-large;
+  background-color: black;
+  color: white;
 }
 
 /***************************************************************** TOP LEFT CONTAINER */

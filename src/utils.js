@@ -49,18 +49,25 @@ export const unUrlify = (text) => {
   return buffer.innerText;
 };
 
-export const request = async (url = '', data = {}, timeout = 100000) => {
+export const request = async (
+  url = '',
+  data = {},
+  timeout = 100000,
+  onProgress = null
+) => {
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', url);
+  xhr.open('POST', url, true);
   xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+
+  xhr.upload.onprogress = onProgress;
+
+  xhr.ontimeout = () => console.info(url, ' timeout');
 
   try {
     xhr.send(JSON.stringify(data));
   } catch (error) {
     console.info('Request error ', error);
   }
-
-  xhr.ontimeout = () => console.info(url, ' timeout');
 
   return new Promise((resolve, reject) => {
     xhr.onloadend = () => {
