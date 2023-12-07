@@ -157,6 +157,10 @@ export const start = (user, config = {}) => {
   );
   leftPanDomElement.appendChild(pointCloudVisualizer.measureDomElement);
 
+  const topRightContainer = document.createElement('div');
+  topRightContainer.setAttribute('id', 'top_right_container');
+  document.body.appendChild(topRightContainer);
+
   //* ****************************************************************************** APP CONTEXT END */
 
   // resizable left pan
@@ -309,8 +313,7 @@ export const start = (user, config = {}) => {
   {
     let fold = false;
     const buttonFold = document.createElement('button');
-    buttonFold.classList.add('button_fold');
-    document.body.appendChild(buttonFold);
+    topRightContainer.appendChild(buttonFold);
     const updateContainerTL = () => {
       if (!fold) {
         buttonFold.innerText = 'cacher ui';
@@ -539,13 +542,32 @@ export const start = (user, config = {}) => {
                     mesh,
                     // called when the glb has been generated
                     function (gltf) {
+                      const loadingInfo = document.createElement('div');
+                      loadingInfo.classList.add('loading_info');
+                      topRightContainer.appendChild(loadingInfo);
+
                       request(
                         window.location.origin +
                           constants.endPoint.galeri3.updateGLTF +
                           '/' +
                           el.uuid,
-                        { gltf: gltf }
+                        { gltf: gltf },
+                        100000,
+                        (event) => {
+                          loadingInfo.innerText =
+                            el.name +
+                            ' ' +
+                            (100 * event.loaded) / event.total +
+                            '%';
+                          console.log(
+                            event.loaded,
+                            'bytes loaded',
+                            event.total,
+                            'bytes total'
+                          );
+                        }
                       ).then((response) => {
+                        loadingInfo.remove();
                         alert(response.message);
                         updateGLTFToValidate();
                       });
@@ -690,13 +712,34 @@ export const start = (user, config = {}) => {
                     mesh,
                     // called when the glb has been generated
                     function (gltf) {
+                      const loadingInfo = document.createElement('div');
+                      loadingInfo.classList.add('loading_info');
+                      topRightContainer.appendChild(loadingInfo);
+
                       request(
                         window.location.origin +
                           constants.endPoint.galeri3.updateGLTF +
                           '/' +
                           object3D.uuid,
-                        { gltf: gltf }
-                      ).then(updateGLTFValidated);
+                        { gltf: gltf },
+                        100000, // 100 sec
+                        (event) => {
+                          loadingInfo.innerText =
+                            object3D.name +
+                            ' ' +
+                            (100 * event.loaded) / event.total +
+                            '%';
+                          console.log(
+                            event.loaded,
+                            'bytes loaded',
+                            event.total,
+                            'bytes total'
+                          );
+                        }
+                      ).then(() => {
+                        loadingInfo.remove();
+                        updateGLTFValidated();
+                      });
                     },
                     // called when there is an error in the generation
                     function (error) {
@@ -833,14 +876,32 @@ export const start = (user, config = {}) => {
               child,
               // called when the glb has been generated
               function (gltf) {
+                const loadingInfo = document.createElement('div');
+                loadingInfo.classList.add('loading_info');
+                topRightContainer.appendChild(loadingInfo);
+
                 request(
                   window.location.origin +
                     constants.endPoint.galeri3.createGLTF,
                   {
                     name: name,
                     gltf: gltf,
+                  },
+                  100000, // 100 sec
+                  (event) => {
+                    loadingInfo.innerText =
+                      name + ' ' + (100 * event.loaded) / event.total + '%';
+                    console.log(
+                      event.loaded,
+                      'bytes loaded',
+                      event.total,
+                      'bytes total'
+                    );
                   }
-                ).then((response) => alert(response.message));
+                ).then((response) => {
+                  loadingInfo.remove();
+                  alert(response.message);
+                });
               },
               // called when there is an error in the generation
               function (error) {
