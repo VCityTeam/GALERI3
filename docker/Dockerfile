@@ -12,11 +12,6 @@ RUN npm --version
 COPY . /GALERI3
 WORKDIR /GALERI3 
 RUN npm install
-ARG ADMIN=admin
-ARG ADMIN_PWD=admin
-RUN touch .env
-RUN npm run create-token-secret
-RUN node ./bin/createAdmin.js ${ADMIN} ${ADMIN_PWD}
 
 # run GALERI3
 CMD ["npm", "run", "start"]

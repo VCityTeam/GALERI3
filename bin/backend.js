@@ -77,20 +77,6 @@ const createApp = async () => {
   );
 
   // private assets
-  app.get('/private_assets/**', authenticateToken, (req, res) => {
-    const assetPath = path.resolve(
-      process.cwd(),
-      CLIENT_FOLDER_PATH + req.url.toString()
-    );
-
-    if (!fs.existsSync(assetPath)) {
-      res.status(404);
-      res.send();
-    } else {
-      res.send(fs.readFileSync(assetPath));
-    }
-  });
-
   const sendFileFromRequest = (req, res) => {
     const assetPath = path.resolve(
       process.cwd(),
