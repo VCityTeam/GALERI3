@@ -18,7 +18,7 @@ Galeri3 is a web application made of a backend ([express](https://expressjs.com/
 
   * run the application
 
-    `npm run start`
+    `npm run build-start`
 
   * go to http://localhost:8000/.
 

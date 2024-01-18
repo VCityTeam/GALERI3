@@ -12,6 +12,7 @@ RUN npm --version
 COPY . /GALERI3
 WORKDIR /GALERI3 
 RUN npm install
+RUN npm run build
 
 # run GALERI3
 CMD ["npm", "run", "start"]
