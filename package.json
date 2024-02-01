@@ -1,6 +1,6 @@
 {
   "name": "galeri3",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "web app to visualize and cooperate on a pointcloud",
   "scripts": {
     "clean": "rm -f -r node_modules && rm -f package-lock.json && rm -f  -r ./public/dist",
