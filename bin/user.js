@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
 const { user, constants } = require('../src/shared');
 const THREE = require('three');
+const cookie = require('cookie');
 
 let User = null;
 let sequelize = null;
@@ -91,14 +92,14 @@ const generateAccessToken = (user) => {
 };
 
 const computeAccessTokenFromRequest = (req) => {
-  const cookie = req.headers.cookie;
-  if (!cookie || cookie == '') return null;
+  const g3cookie = cookie.parse(req.headers.cookie || '').galeri3;
+  if (!g3cookie || g3cookie == '') return null;
 
   let result = null;
   try {
-    result = JSON.parse(cookie).accessToken;
+    result = JSON.parse(g3cookie).accessToken;
   } catch (error) {
-    console.log('cookie = ', cookie);
+    console.log('cookie = ', g3cookie);
     console.info('Error reading cookie ', error);
   }
 

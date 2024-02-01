@@ -84,9 +84,9 @@ export const request = async (
 };
 
 export const setCookie = (key, stringValue) => {
-  const cookie = document.cookie === '' ? {} : JSON.parse(document.cookie);
+  const cookie = {};
   cookie[key] = stringValue;
-  document.cookie = JSON.stringify(cookie);
+  document.cookie = 'galeri3='+JSON.stringify(cookie)+'; path=/; samesite=strict';
 };
 
 export class ImageContainer {
